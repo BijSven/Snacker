@@ -1,0 +1,144 @@
+<script>
+    import * as Tooltip from "$lib/components/ui/tooltip";
+    import * as Dialog from "$lib/components/ui/dialog";
+    import * as Popover from "$lib/components/ui/popover";
+
+    import ProjectIcon from './components/ProjectIcon.svelte';
+    import { Input } from "$lib/components/ui/input";
+    import { Button } from "$lib/components/ui/button";
+    import { Label } from "$lib/components/ui/label";
+    import { Plus } from 'lucide-svelte';
+    import { CircleUserRound } from 'lucide-svelte';
+
+    import PocketBase from '$lib/pb';
+
+    import { onMount } from 'svelte';
+    import { toast } from 'svelte-sonner';
+
+    const pb = new PocketBase();
+
+    let records = [];
+
+
+    async function createProject() {
+        const data = new FormData(document.getElementById('DATA_NEW-PJCT'));
+
+        let sendData = {
+            name: data.get('name'),
+            logo: data.get('logo'),
+            members: pb.authStore.model.id,
+        }
+
+        try {
+            await pb.collection('projects').create(sendData)
+            toast.success(`${data.get('name')} has been created!`)
+        } catch (e) {
+            toast.error('Some error occurred while creating your project!')
+        }
+    }
+
+    async function fetchData() {
+        try {
+            records = await pb.collection('projects').getFullList({
+                sort: '-created',
+            });
+
+            if(!records.length > 0) {
+                document.getElementById('newProjectBTN').click();
+            }
+        } catch (e) {
+            records = [];
+        }
+    }
+
+    onMount(async () => {
+        pb.collection('projects').subscribe('*', fetchData);
+        document.addEventListener('REFRESH_PROJECTS', fetchData);
+        fetchData();
+    })
+</script>
+
+<content class="flex items-center justify-center w-[7.5vw] ml-5 h-full">
+    <div class="bg-stone-200 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col gap-5 items-center py-5 w-full left-0 rounded-sm relative">
+        {#each records as record}
+            {#if sessionStorage.getItem('NAV_PROJECT') === null}
+                {#await new Promise(resolve => {
+                    let key = 'NAV_PROJECT';
+                    let reset = 'NAV_CHANNEL';
+
+                    window.sessionStorage.setItem(reset, '');
+                    window.dispatchEvent(new StorageEvent('storage', { key: reset }));
+
+                    window.sessionStorage.setItem(key, record.id);
+                    window.dispatchEvent(new StorageEvent('storage', { key }));
+                    resolve();
+                })}
+                    {window.location.reload()}
+                {/await}
+            {/if}
+            <Tooltip.Root>
+                <Tooltip.Trigger>
+                    <ProjectIcon project={record} />
+                </Tooltip.Trigger>
+                <Tooltip.Content>
+                    <p class="select-none">{record.name}</p>
+                </Tooltip.Content>
+            </Tooltip.Root>
+        {/each}
+
+        <Tooltip.Root>
+            <Tooltip.Trigger>
+                <Dialog.Root>
+                    <Dialog.Trigger>
+                        <button id="newProjectBTN" class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center hover:bg-stone-700 bg-stone-800">
+                            <Plus />
+                        </button>
+                    </Dialog.Trigger>
+                    <Dialog.Content class="sm:max-w-[425px]">
+                        <Dialog.Header>
+                          <Dialog.Title>New project</Dialog.Title>
+                          <Dialog.Description>
+                            Lets get started with your new snacker-project!
+                          </Dialog.Description>
+                        </Dialog.Header>
+                        <form id="DATA_NEW-PJCT" class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <Label class="text-right">Name</Label>
+                                <Input name='name' placeholder="My cool web-app" class="col-span-3" />
+                            </div>
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <Label class="text-right">Logo</Label>
+                                <Input name="logo" type="file" class="col-span-3 text-white" />
+                            </div>
+                        </form>
+                        <Dialog.Footer>
+                          <Button type="submit" on:click={createProject}>Save changes</Button>
+                        </Dialog.Footer>
+                      </Dialog.Content>
+                  </Dialog.Root>
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+                <p class="select-none">New project</p>
+            </Tooltip.Content>
+        </Tooltip.Root>
+        <Popover.Root>
+            <Popover.Trigger class="absolute bottom-0 mb-5">
+                <button class="mt-2 rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center hover:bg-stone-700 bg-stone-800">
+                    <CircleUserRound class="size-8" />
+                </button>
+            </Popover.Trigger>
+            <Popover.Content class="ml-5 flex flex-col gap-4 w-max">
+                <h1>Your account</h1>
+                <div class="flex items-center relative gap-5">
+                    <h1>Account ID</h1>
+                    <h2 class="absolute right-0">{pb.authStore.model.id}</h2>
+                </div>
+                <div class="flex items-center justify-center relative gap-3 my-1 w-max">
+                    <Button variant="outline" on:click={() => {toast.error('Invalid function!')}} class="h-8">Change mail</Button>
+                    <Button variant="outline" on:click={() => {sessionStorage.clear(); localStorage.clear();}} class="h-8">Reset</Button>
+                    <Button variant="destructive" on:click={() => {pb.authStore.clear(); window.location.reload()}} class="h-8">Logout</Button>
+                </div>
+            </Popover.Content>
+        </Popover.Root>
+    </div>
+</content>
