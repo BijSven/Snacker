@@ -11,4 +11,4 @@ vite.config.ts.timestamp-*
 /.old
 /.vercel
 package-lock.json
-/pb
+pb/main.pb.js
