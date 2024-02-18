@@ -3,6 +3,7 @@
 	import { Input } from '$lib/components/ui/input';
     import * as Tabs from "$lib/components/ui/tabs";
     import * as Card from "$lib/components/ui/card";
+    import * as AlertDialog from "$lib/components/ui/alert-dialog";
 
     import { toast } from 'svelte-sonner'
     import { onMount } from 'svelte'
@@ -15,8 +16,10 @@
 	const pb = new PocketBase();
 
     onMount(() => {
-        if(localStorage.followUp === 'SIGNUP/VERIFYEMAIL') {
+        if(localStorage.followUp === 'SIGNUP/VERIFYEMAIL' && !sessionStorage.getItem('TOAST?SHOWMAIL')) {
             toast.info('To continue, please verify your email, after that login!');
+            sessionStorage.setItem('TOAST?SHOWMAIL', 'true');
+            setTimeout(() => { sessionStorage.removeItem('TOAST?SHOWMAIL') }, 250);
         }
     });
     
@@ -44,16 +47,23 @@
         let form = new FormData(document.getElementById('signupData'));
 
         try {
+
             let data = {
                 "name": form.get('name'),
-                "email": form.get('email'),
+                "email": form.get('mail'),
                 "username": form.get('user'),
                 "password": form.get('pasw'),
                 "passwordConfirm": form.get('pasc'),
             };
 
+            if (!Object.values(data).every(value => value !== null && value !== undefined && value !== '')) {
+                toast.error('Please fill in all fields!');
+                return;
+            }
             await pb.collection('users').create(data);
-            await pb.collection('users').requestVerification(form.get('email'));
+            await pb.collection('users').requestVerification(form.get('mail'));
+            
+            document.getElementById('CONFIRM_ACCOUNT_CREATION').click();
         } catch {
             toast.error('Something went wrong, please confirm all your information!');
             return;
@@ -110,6 +120,21 @@
                                     <Input name="pasw" minlength="8" max="16" type="password" placeholder="Password" required />
                                     <Input name="pasc" minlength="8" max="16" type="password" placeholder="Confirm password" required />
                                     <Button type="submit" variant="outline">Register</Button>
+                                    <AlertDialog.Root>
+                                        <AlertDialog.Trigger class="hidden"><Button id="CONFIRM_ACCOUNT_CREATION">CONFIRM</Button></AlertDialog.Trigger>
+                                        <AlertDialog.Content>
+                                            <AlertDialog.Header>
+                                            <AlertDialog.Title>Yea! Your account has been created!</AlertDialog.Title>
+                                            <AlertDialog.Description>
+                                                On this moment, your account is created on our servers, to login. Please verify your account
+                                                via the email you have recieved from us. When done, you can login on the login page!
+                                            </AlertDialog.Description>
+                                            </AlertDialog.Header>
+                                                <AlertDialog.Footer>
+                                                    <AlertDialog.Action on:click={() => {window.location.reload()}}>Back to login</AlertDialog.Action>
+                                                </AlertDialog.Footer>
+                                        </AlertDialog.Content>
+                                    </AlertDialog.Root>
                                 </form>
                             </Card.Root>
                         </Tabs.Content>
