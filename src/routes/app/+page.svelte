@@ -7,10 +7,10 @@
     import * as AlertDialog from "$lib/components/ui/alert-dialog";
     import * as Select from "$lib/components/ui/select";
     import { Button } from '$lib/components/ui/button';
+    import { Input } from '$lib/components/ui/input';
 
     import PocketBase from '$lib/pb';
 
-    import { JsonView } from '@zerodevx/svelte-json-view'
     import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
     
@@ -24,8 +24,10 @@
     let channels = [];
     let allProjects = [];
     let location = {};
-    
 
+    let STATUS_InviteUserOpen = false;
+    let STATUS_NewTokenCreate = false;
+    
     let pageType;
 
     async function updateData() {
@@ -143,11 +145,11 @@
                                     So you can see the live actions of the server. Lets try it out!<br><br>
 
                                     Your app sends a POST-request to:<br><br>
-                                    <div class="border h-max w-[100%] py-5 pl-2">
-                                        https://snacker.db.orae.one/log/YOUR_TOKEN
+                                    <div class="border h-max w-[100%] py-5 pl-2 rounded-e rounded-s">
+                                        {pb.baseUrl}/log/YOUR_TOKEN
                                     </div>
                                     <br>and add this body:<br><br>
-                                    <div class="border h-max w-[100%] py-5 pl-2">
+                                    <div class="border h-max w-[100%] py-5 pl-2 rounded-s rounded-e">
                                         {'{'}
                                         <div class="ml-5">
                                             "icon": "🥳",<br>
@@ -164,7 +166,7 @@
                                 </AlertDialog.Footer>
                             </AlertDialog.Content>
                         </AlertDialog.Root>
-                        <Popover.Root>
+                        <Popover.Root bind:open={STATUS_NewTokenCreate}>
                             <Popover.Trigger>
                                 <Button>New token</Button>
                             </Popover.Trigger>
@@ -176,12 +178,14 @@
                                     <Select.Content>
                                         {#each channels as channel}
                                             <Select.Item on:click={async () => {
+                                                STATUS_NewTokenCreate = false;
+
                                                 let data = {
                                                     "channel": channel.id,
                                                 }
 
                                                 await pb.collection('tokens').create(data);
-
+                                                
                                                 toast.success('Token has been created!');
                                             }} value={channel.id}>{channel.name}</Select.Item>
                                         {/each}
@@ -223,6 +227,35 @@
                 <div class="border-b w-[60vw] h-max relative flex my-5 pb-5 items-center">
                     <h1 class="text-2xl left-0">Team members</h1>
                     <div class="absolute right-0 flex justify-center items-center gap-4">
+                        <Popover.Root bind:open={STATUS_InviteUserOpen}>
+                            <Popover.Trigger>
+                                <Button>Invite user</Button>
+                            </Popover.Trigger>
+                            <Popover.Content class="flex">
+                                <form class="w-full" id="DATA_INVITE-USER" on:submit={async () => {
+                                    STATUS_InviteUserOpen = false;
+                                    let form = new FormData(document.getElementById('DATA_INVITE-USER'));
+                                
+                                    const data = {
+                                        "userSent": pb.authStore.model.id,
+                                        "userInvited": form.get('AccountID'),
+                                        "project": sessionStorage.getItem('NAV_PROJECT')
+                                    };
+                                
+                                    await pb.collection('TeamInvites').create(data);
+                                
+                                    let response = await fetch(`${pb.baseUrl}/api/name/${form.get('AccountID')}`);
+                                    const userData = await response.json();
+                                    const userName = userData.name;
+                                
+                                    toast.success(`${userName} has been invited!`, {
+                                        description: `Now we wait on a response!`
+                                    });
+                                }}>
+                                    <Input name="AccountID" placeholder="Enter Account-ID"/>
+                                </form>
+                            </Popover.Content>
+                        </Popover.Root>
                     </div>
                 </div>
                 <Table.Root>

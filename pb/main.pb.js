@@ -6,6 +6,14 @@ routerAdd("GET", "/api/name/:id", (c) => {
     return c.json(200, { "name": username.get("name") })
 });
 
+routerAdd("GET", "/api/project/:id", (c) => {
+    let id = c.pathParam("id");
+
+    var projects = $app.dao().findRecordById("projects", id);
+
+    return c.json(200, { "name": projects.get("name") })
+});
+
 routerAdd("POST", "/log/:token", (c) => {
     const body = $apis.requestInfo(c).data
 
