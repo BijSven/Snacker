@@ -4,13 +4,16 @@
 
     import * as Table from "$lib/components/ui/table";
     import * as Popover from "$lib/components/ui/popover";
+    import * as AlertDialog from "$lib/components/ui/alert-dialog";
     import * as Select from "$lib/components/ui/select";
     import { Button } from '$lib/components/ui/button';
 
     import PocketBase from '$lib/pb';
 
+    import { JsonView } from '@zerodevx/svelte-json-view'
     import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
+    
 
     const pb = new PocketBase();
     pb.autoCancellation(false);
@@ -20,6 +23,8 @@
     let channels = [];
     let allProjects = [];
     let location = {};
+    
+
     let pageType;
 
     async function updateData() {
@@ -123,38 +128,72 @@
             <section>
                 <div class="border-b w-[60vw] h-max relative flex my-5 pb-5 items-center">
                     <h1 class="text-2xl left-0">Tokens</h1>
-                    <Popover.Root>
-                        <Popover.Trigger class="absolute right-0 flex justify-center items-center">
-                            <Button variant="outline">New token</Button>
-                        </Popover.Trigger>
-                    <Popover.Content class="flex">
-                        <Select.Root>
-                            <Select.Trigger class="col-span-2">
-                                <Select.Value placeholder="Channel" />
-                            </Select.Trigger>
-                            <Select.Content>
-                                {#each channels as channel}
-                                    <Select.Item on:click={async () => {
-                                        let data = {
-                                            "channel": channel.id,
-                                        }
+                    <div class="absolute right-0 flex justify-center items-center gap-4">
+                        <AlertDialog.Root>
+                            <AlertDialog.Trigger><Button variant="outline">Instructions</Button></AlertDialog.Trigger>
+                            <AlertDialog.Content>
+                            <AlertDialog.Header>
+                                <AlertDialog.Title>How to use tokens!</AlertDialog.Title>
+                                <AlertDialog.Description>
+                                    Tokens are the way users, projects and systems can interact with your channels.
+                                    Developer can intergrate there systems so that the system sends a request on action.
+                                    So you can see the live actions of the server. Lets try it out!<br><br>
 
-                                        await pb.collection('tokens').create(data);
+                                    Your app sends a POST-request to:<br><br>
+                                    <div class="border h-max w-[100%] py-5 pl-2">
+                                        https://snacker.db.orae.one/log/YOUR_TOKEN
+                                    </div>
+                                    <br>and add this body:<br><br>
+                                    <div class="border h-max w-[100%] py-5 pl-2">
+                                        {'{'}
+                                        <div class="ml-5">
+                                            "icon": "🥳",<br>
+                                            "title": "New follower!",<br>
+                                            "source": "Twitch"<br>
+                                        </div>
+                                        {'}'}
+                                    </div><br>
+                                    With such request, you will see the live actions appear on your dashboard!
+                                </AlertDialog.Description>
+                            </AlertDialog.Header>
+                                <AlertDialog.Footer>
+                                    <AlertDialog.Action>Okay</AlertDialog.Action>
+                                </AlertDialog.Footer>
+                            </AlertDialog.Content>
+                        </AlertDialog.Root>
+                        <Popover.Root>
+                            <Popover.Trigger>
+                                <Button>New token</Button>
+                            </Popover.Trigger>
+                            <Popover.Content class="flex">
+                                <Select.Root>
+                                    <Select.Trigger class="col-span-2">
+                                        <Select.Value placeholder="Channel" />
+                                    </Select.Trigger>
+                                    <Select.Content>
+                                        {#each channels as channel}
+                                            <Select.Item on:click={async () => {
+                                                let data = {
+                                                    "channel": channel.id,
+                                                }
 
-                                        toast.success('Token has been created!');
-                                    }} value={channel.id}>{channel.name}</Select.Item>
-                                {/each}
-                            </Select.Content>
-                        </Select.Root>
-                    </Popover.Content>
-                </Popover.Root>
+                                                await pb.collection('tokens').create(data);
+
+                                                toast.success('Token has been created!');
+                                            }} value={channel.id}>{channel.name}</Select.Item>
+                                        {/each}
+                                    </Select.Content>
+                                </Select.Root>
+                            </Popover.Content>
+                        </Popover.Root>
+                    </div>
                 </div>
                 <Table.Root>
                     <Table.Header>
                         <Table.Row>
-                            <Table.Head class="w-[50%]">Token</Table.Head>
+                            <Table.Head class="w-[40%]">Token</Table.Head>
                             <Table.Head class="w-[30%]">Channel</Table.Head>
-                            <Table.Head>Actions</Table.Head>
+                            <Table.Head class="w-[30%]">Actions</Table.Head>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

@@ -31,6 +31,7 @@
 	},
 	"dependencies": {
 		"@sveltejs/adapter-vercel": "^5.1.0",
+		"@zerodevx/svelte-json-view": "^1.0.9",
 		"bits-ui": "^0.18.1",
 		"clsx": "^2.1.0",
 		"lucide-svelte": "^0.331.0",
