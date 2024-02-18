@@ -81,7 +81,7 @@
 <content class="flex items-center justify-center w-full mr-5 ml-5 h-full">
     <div class="h-[95vh] relative flex flex-col overflow-y-auto items-center gap-4 z-0 p-3 bg-stone-200 dark:bg-stone-900 rounded-sm w-full">
         {#if pageType == "default"}
-            <div class="border-b h-12 w-full flex gap-2 text-muted-foreground justify-center items-center">
+            <div class="border-b min-h-12 h-12 w-full flex gap-2 text-muted-foreground justify-center items-center">
                 {#if location.channel}
                     <button class="cursor-pointer" on:click={() => {
                         sessionStorage.setItem('NAV_CHANNEL', '');
