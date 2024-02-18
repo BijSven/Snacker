@@ -20,6 +20,7 @@
 
     let records = [];
     let tokens = [];
+    let teamMembers = [];
     let channels = [];
     let allProjects = [];
     let location = {};
@@ -28,7 +29,7 @@
     let pageType;
 
     async function updateData() {
-        let loadingToast = toast.loading('Showing logs...');
+        let loadingToast = toast.loading('Fetching data...');
 
         records = await pb.collection('logs').getFullList({
             filter: `channel.id = "${sessionStorage.getItem('NAV_CHANNEL')}"`,
@@ -44,6 +45,8 @@
             filter: `channel.project.id = "${sessionStorage.getItem('NAV_PROJECT')}"`,
             sort: '-created',
         });
+
+        teamMembers = (await pb.collection('projects').getOne(sessionStorage.getItem('NAV_PROJECT'))).members;
 
         location = {
             project: (await pb.collection('projects').getOne(window.sessionStorage.getItem('NAV_PROJECT'))).name,
@@ -64,7 +67,7 @@
             if(event.key == 'VIEW_PAGETYPE') {
                 pageType = sessionStorage.getItem('VIEW_PAGETYPE');
             }
-            if(event.key == "NAV_CHANNEL") {
+            if(event.key == ("NAV_CHANNEL" || "NAV_PROJECT")) {
                 updateData();
             }
         }, false);
@@ -213,6 +216,72 @@
                                     </Table.Cell>
                                 </Table.Row>
                             {/each}
+                    </Table.Body>
+                </Table.Root>
+            </section>
+            <section>
+                <div class="border-b w-[60vw] h-max relative flex my-5 pb-5 items-center">
+                    <h1 class="text-2xl left-0">Team members</h1>
+                    <div class="absolute right-0 flex justify-center items-center gap-4">
+                    </div>
+                </div>
+                <Table.Root>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.Head class="w-[40%]">Username</Table.Head>
+                            <Table.Head class="w-[30%]">Actions</Table.Head>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {#each teamMembers as teamMember}
+                            <Table.Row>
+                                <Table.Cell class="font-medium">
+                                    {#await (async () => {
+                                        try {
+                                            const response = await fetch(`${pb.baseUrl}/api/name/${teamMember}`);
+                                        
+                                            if (!response.ok) {
+                                                throw new Error(`HTTP error! status: ${response.status}`);
+                                            }
+                                        
+                                            const data = await response.json();
+                                            return data.name;
+                                        } catch (error) {
+                                            throw error;
+                                        }
+                                    })() then name}
+                                        {name}
+                                    {:catch error}
+                                        Error: {error.message}
+                                    {/await}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {#if teamMember != pb.authStore.model.id}
+                                        <Button on:click={async () => {
+                                            let user = teamMember;
+                                            let members = teamMembers;
+
+                                            var index = members.indexOf(user);
+                                            index !== -1 ? members.splice(index, 1) : null;
+
+                                            let newData = {
+                                                "members": members
+                                            };
+
+                                            await pb.collection('projects').update(sessionStorage.getItem('NAV_PROJECT'), newData);
+
+                                            toast.info('User has been kicked!');
+
+                                            updateData();
+                                        }} variant="destructive">Kickout</Button>
+                                    {:else}
+                                        <div class="cursor-not-allowed">
+                                            <Button disabled variant="destructive">Kickout</Button>
+                                        </div>
+                                    {/if}
+                                </Table.Cell>
+                            </Table.Row>
+                        {/each}
                     </Table.Body>
                 </Table.Root>
             </section>

@@ -1,3 +1,11 @@
+routerAdd("GET", "/api/name/:id", (c) => {
+    let id = c.pathParam("id");
+
+    var username = $app.dao().findRecordById("users", id);
+
+    return c.json(200, { "name": username.get("name") })
+});
+
 routerAdd("POST", "/log/:token", (c) => {
     const body = $apis.requestInfo(c).data
 
