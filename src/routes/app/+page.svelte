@@ -261,7 +261,7 @@
                 <Table.Root>
                     <Table.Header>
                         <Table.Row>
-                            <Table.Head class="w-[40%]">Username</Table.Head>
+                            <Table.Head class="w-[70%]">Username</Table.Head>
                             <Table.Head class="w-[30%]">Actions</Table.Head>
                         </Table.Row>
                     </Table.Header>
