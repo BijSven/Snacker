@@ -53,6 +53,7 @@
             });
 
             const serverItemsSet = new Set(serverItems.map(item => item.id));
+            const currentItemsSet = new Set(items.map(item => item.data.text));
 
             items = items.filter(item => serverItemsSet.has(item.data.text));
 
@@ -79,7 +80,7 @@
             })
             console.error(e);
         }
-    }); 
+    });
 
     window.addEventListener('storage', function(event) {
         if(event.key == "NAV_PROJECT") {
