@@ -10,8 +10,10 @@
     import { writable } from 'svelte/store'
 
     import PocketBase from "$lib/pb";
+    import Snacker from '$lib/sdk.js';
 
     const pb = new PocketBase();
+    const sk = new Snacker('uuop9nubbp1zrt5');
 
     let data = {
         "icon": project.name.split(' ').map(word => word.charAt(0)).join('')
@@ -37,12 +39,15 @@
 
         await pb.collection('projects').update(project.id, newData);
         document.dispatchEvent(new CustomEvent('REFRESH_PROJECTS'));
+        sk.sendLog('🚪', 'User left project', 'Snacker/Projects');
         toast.success('Successfully left the project!');
     }
 
     async function updateData() {
         let key = 'NAV_PROJECT';
         let reset = 'NAV_CHANNEL';
+
+        sk.sendLog('😅', 'User switched project', 'Snacker/Projects');
 
         window.sessionStorage.setItem(reset, '');
         window.dispatchEvent(new StorageEvent('storage', { key: reset }));

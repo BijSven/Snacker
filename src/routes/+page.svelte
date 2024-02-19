@@ -10,16 +10,21 @@
 
 
     import PocketBase from '$lib/pb.js';
-    import '$lib/dark.js';
-    import '$lib/auth.js';
-
+    import Snacker from '$lib/sdk.js';
+    
 	const pb = new PocketBase();
+    const sk = new Snacker('8x7z2p9napr7xu5');
 
     onMount(() => {
         if(localStorage.followUp === 'SIGNUP/VERIFYEMAIL' && !sessionStorage.getItem('TOAST?SHOWMAIL')) {
             toast.info('To continue, please verify your email, after that login!');
             sessionStorage.setItem('TOAST?SHOWMAIL', 'true');
+
+            sk.sendLog('⚠️', 'Stills needs to verify', 'Snacker/VMCheck');
+
             setTimeout(() => { sessionStorage.removeItem('TOAST?SHOWMAIL') }, 250);
+        } else {
+            sk.sendLog('👋', 'User visited login', 'Snacker/P4');
         }
     });
     
@@ -33,8 +38,11 @@
                 form.get('user'),
                 form.get('pasw'),
             );
+
+            sk.sendLog('🗝️', 'User authenicated!', 'Snacker/Auth')
         } catch {
             toast.error('Invalid details, check again!');
+            sk.sendLog('🔒', 'User authenication rejected!', 'Snacker/Auth')
             return;
         }
         localStorage.removeItem('followUp');
@@ -63,7 +71,10 @@
             await pb.collection('users').create(data);
             await pb.collection('users').requestVerification(form.get('mail'));
             
+            sk.sendLog('🗞️', 'User registered!', 'Snacker/Auth')
+
             document.getElementById('CONFIRM_ACCOUNT_CREATION').click();
+            
         } catch {
             toast.error('Something went wrong, please confirm all your information!');
             return;
