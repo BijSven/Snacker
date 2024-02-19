@@ -74,6 +74,7 @@
 
             toast.dismiss(event.toast);
             localStorage.setItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`, JSON.stringify(items));
+            toast.success('Dashboard has been updated!');
         } catch (e) {
             toast.error('Something went wrong', {
                 description: 'Check the console for more information.'

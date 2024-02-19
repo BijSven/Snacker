@@ -110,7 +110,7 @@
                     <h1 class="text-muted-foreground"><span class="text-foreground">Dashboard</span> / <button on:click={() => {
                         let loadingToast = toast.loading('Fetching new data...');
                         window.dispatchEvent(new CustomEvent('UPDATE_DASHBOARD', {key: sessionStorage.getItem('NAV_PROJECT'), toast: loadingToast}));
-                    }}>Refresh data</button></h1>
+                    }}>Reload</button></h1>
                 </div>
                 <div class="h-full w-full overflow-y-hidden">
                     <GridView />
