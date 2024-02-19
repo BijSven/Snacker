@@ -108,9 +108,8 @@
             {#if !location.channel || location.channel == ''}
                 <div class="flex flex-col gap-0 items-center justify-center">
                     <h1 class="text-muted-foreground"><span class="text-foreground">Dashboard</span> / <button on:click={() => {
-                        sessionStorage.removeItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`);
-                        window.dispatchEvent(new StorageEvent('storage', { key: 'NAV_PROJECT' }));
-                        toast.success('Done, data is refreshed!');
+                        let loadingToast = toast.loading('Fetching new data...');
+                        window.dispatchEvent(new CustomEvent('UPDATE_DASHBOARD', {key: sessionStorage.getItem('NAV_PROJECT'), toast: loadingToast}));
                     }}>Refresh data</button></h1>
                 </div>
                 <div class="h-full w-full overflow-y-hidden">

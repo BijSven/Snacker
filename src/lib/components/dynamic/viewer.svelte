@@ -1,22 +1,25 @@
 <script>
     import PocketBase from '$lib/pb';
     import Grid, { GridItem } from 'svelte-grid-extended';
+    import { toast } from 'svelte-sonner';
 
     const pb = new PocketBase();
 
     let items = [];
     let init = false;
+    let gridController;
 
     async function loadItems() {
         const navProject = sessionStorage.getItem('NAV_PROJECT');
         if (navProject) {
-            const storedItems = sessionStorage.getItem(`DATA_DB-${navProject}`);
+            const storedItems = localStorage.getItem(`DATA_DB-${navProject}`);
             if (storedItems) {
                 items = JSON.parse(storedItems);
             } else {
                 let serverItems = await pb.collection('channels').getFullList({
                     filter: `project.id = "${sessionStorage.getItem('NAV_PROJECT')}"`,
                     sort: '-created',
+                    $autoCancel: false
                 });
 
                 items = serverItems.map((item, index) => {
@@ -32,6 +35,50 @@
         }
     }
 
+    window.addEventListener('UPDATE_DASHBOARD', async (event) => {
+        try {
+            const storedItems = localStorage.getItem(`DATA_DB-${event.key}`);
+
+            if (storedItems) {
+                items = JSON.parse(storedItems);
+            }
+
+            sessionStorage.removeItem('LAST_REQUEST_LOGS');
+            sessionStorage.removeItem('LAST_REQUEST');
+
+            let serverItems = await pb.collection('channels').getFullList({
+                filter: `project.id = "${sessionStorage.getItem('NAV_PROJECT')}"`,
+                sort: '-created',
+                $autoCancel: false,
+            });
+
+            const currentItemsSet = new Set(items.map(item => item.data.text));
+
+            serverItems.forEach((serverItem, index) => {
+                if (!currentItemsSet.has(serverItem.id)) {
+                    const newPosition = gridController.getFirstAvailablePosition();
+                    items.push({
+                        x: newPosition.x,
+                        y: newPosition.y,
+                        data: {
+                            text: serverItem.id
+                        }
+                    });
+                }
+            });
+
+            items = items;
+
+            toast.dismiss(event.toast);
+            localStorage.setItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`, JSON.stringify(items));
+        } catch (e) {
+            toast.error('Something went wrong', {
+                description: 'Check the console for more information.'
+            })
+            console.error(e);
+        }
+    }); 
+
     window.addEventListener('storage', function(event) {
         if(event.key == "NAV_PROJECT") {
             loadItems();
@@ -39,13 +86,12 @@
     }, false);
 
     $: { loadItems() }
-
-    $: if(init = true) { sessionStorage.setItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`, JSON.stringify(items)) };
+    $: if(init = true) { localStorage.setItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`, JSON.stringify(items)) };
 
     const itemSize = { width: 250, height: 150 };
 </script>
 
-<Grid collision="push" cols={4} rows={4} {itemSize}>
+<Grid bind:controller={gridController} collision="push" cols={4} rows={4} {itemSize}>
 	{#each items as item}
 		<GridItem resizable={false} class="flex gap-4 rounded-sm p-5 place-items-center rounded-s rounded-e bg-stone-800 overflow-hidden" bind:x={item.x} bind:y={item.y}>
             <h1 class="size-12 rounded-sm flex justify-center items-center text-2xl select-none">✨</h1>
@@ -66,7 +112,7 @@
                         }
                     
                         if (!cached.hasOwnProperty(item.data.text)) {
-                            response = await pb.collection('channels').getOne(item.data.text);
+                            response = await pb.collection('channels').getOne(item.data.text, { $autoCancel: false });
                             cached[item.data.text] = response;
                             sessionStorage.setItem('LAST_REQUEST', JSON.stringify(cached));
                             return response.name;
@@ -103,6 +149,7 @@
                             response = await pb.collection('logs').getFullList({
                                 filter: `channel.id = "${channelId}"`,
                                 sort: '-created',
+                                $autoCancel: false,
                             });
                             cached[channelId] = response;
                             sessionStorage.setItem('LAST_REQUEST_LOGS', JSON.stringify(cached));
