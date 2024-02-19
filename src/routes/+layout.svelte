@@ -36,11 +36,11 @@
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                let data = await response.json();
+                let responseData = await response.json();
 
                 toast.info('You got a new invite!', {
                     duration: Number.POSITIVE_INFINITY,
-                    description: `From: Team ${data.name}`,
+                    description: `From: Team ${responseData.name}`,
                     action: {
                         label: 'Accept',
                         onClick: async () => {
@@ -54,7 +54,7 @@
                             await pb.collection('projects').update(item.project, data);
                             await pb.collection('TeamInvites').delete(item.id);
                             
-                            toast.success(`You have joined ${data.name}`, { description: 'Ahoy, welcome onboard!' })
+                            toast.success(`You have joined ${responseData.name}`, { description: 'Ahoy, welcome onboard!' })
                         }
                     },
                 });
