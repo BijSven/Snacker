@@ -4,7 +4,7 @@ routerAdd("GET", "/api/name/:id", (c) => {
     var username = $app.dao().findRecordById("users", id);
 
     $app.logger().info(
-        `/api/name/${id}`,
+        `GET /api/name/${id}`,
     )
 
     return c.json(200, { "name": username.get("name") })
@@ -16,7 +16,7 @@ routerAdd("GET", "/api/project/:id", (c) => {
     var projects = $app.dao().findRecordById("projects", id);
 
     $app.logger().info(
-        `/api/project/${id}`,
+        `GET /api/project/${id}`,
     )
 
     return c.json(200, { "name": projects.get("name") })
@@ -40,7 +40,7 @@ routerAdd("POST", "/log/:token", (c) => {
     );
 
     $app.logger().info(
-        `/log/${token}`,
+        `POST /log/${token}`,
         "icon", body.icon,
         "data", body.title,
         "source", body.source,
