@@ -52,7 +52,9 @@
                 $autoCancel: false,
             });
 
-            const currentItemsSet = new Set(items.map(item => item.data.text));
+            const serverItemsSet = new Set(serverItems.map(item => item.id));
+
+            items = items.filter(item => serverItemsSet.has(item.data.text));
 
             serverItems.forEach((serverItem, index) => {
                 if (!currentItemsSet.has(serverItem.id)) {
