@@ -40,7 +40,7 @@
 
                 toast.info('You got a new invite!', {
                     duration: Number.POSITIVE_INFINITY,
-                    description: `From: ${data.name}`,
+                    description: `From: Team ${data.name}`,
                     action: {
                         label: 'Accept',
                         onClick: async () => {
