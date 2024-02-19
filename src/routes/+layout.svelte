@@ -27,7 +27,7 @@
         console.log(path);
 
         let serverItems = await pb.collection('TeamInvites').getFullList({
-            filter: `userInvited = ${pb.authStore.model.id}`
+            filter: `userInvited = "${pb.authStore.model.id}"`
         });
 
         serverItems.forEach(async (item) => {
