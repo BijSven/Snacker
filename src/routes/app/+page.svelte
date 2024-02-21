@@ -9,14 +9,19 @@
     import { Button } from '$lib/components/ui/button';
     import { Input } from '$lib/components/ui/input';
 
+    import { version } from '$app/environment';
+
     import PocketBase from '$lib/pb';
 
     import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
+	import { Package } from 'lucide-svelte';
     
 
     const pb = new PocketBase();
     pb.autoCancellation(false);
+
+    const appVersion = import.meta.env.VITE_APP_VERSION;
 
     let records = [];
     let tokens = [];
@@ -115,7 +120,7 @@
                 <div class="h-full w-full overflow-y-hidden">
                     <GridView />
                 </div>
-                    <h1 class="text-muted-foreground absolute mb-2 bottom-0">Snacker v0.5</h1>
+                    <h1 class="text-muted-foreground absolute mb-2 bottom-0">Snacker v{appVersion}</h1>
             {/if}
         {/if}
         {#if pageType == "settings"}
