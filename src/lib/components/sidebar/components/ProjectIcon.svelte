@@ -59,7 +59,7 @@
 <AlertDialog.Root>
     <ContextMenu.Root>
         <ContextMenu.Trigger>
-            <button on:click={updateData} class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center hover:bg-stone-700 bg-stone-800">
+            <button on:click={updateData} class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                 {#if !project.logo}
                     <h1>{data.icon}</h1>
                 {:else}

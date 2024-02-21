@@ -62,7 +62,7 @@
 
 {#if allProjects.length > 0}
 <content class="flex items-center justify-center w-[25vw] ml-5 h-full">
-    <div class="bg-stone-200 dark:bg-stone-900 h-[95vh] relative overflow-y-auto flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
+    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] relative overflow-y-auto flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
         {#each records as record}
             <ContextMenu.Root>
                 <ContextMenu.Trigger class="w-full flex flex-col items-center">
@@ -76,13 +76,13 @@
             <h1 class="text-muted-foreground w-[80%] text-center">There are no channels, try creating one!</h1>
         {/each}
         <div class="flex flex-col mb-5 bottom-0 absolute w-full justify-center items-center gap-3">
-            <button on:click={() => { sessionStorage.setItem('VIEW_PAGETYPE', 'settings'); window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' })) }} class="duration-200 pl-3 p-2 text-muted-foreground hover:text-foreground w-[90%] h-fit text-base flex gap-2 items-center cursor-pointer rounded-sm hover:bg-stone-700 bg-stone-800">
+            <button on:click={() => { sessionStorage.setItem('VIEW_PAGETYPE', 'settings'); window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' })) }} class="duration-200 pl-3 p-2 text-muted-foreground hover:text-foreground w-[90%] h-fit text-base flex gap-2 items-center cursor-pointer rounded-sm bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                 <Settings class="size-5" />
                 <h1>Settings</h1>
             </button>
             <Dialog.Root>
                 <Dialog.Trigger class="w-full flex justify-center items-center">
-                <button class="duration-200 pl-3 p-2 text-muted-foreground hover:text-foreground w-[90%] h-fit text-base flex gap-2 items-center cursor-pointer rounded-sm hover:bg-stone-700 bg-stone-800">
+                <button class="duration-200 pl-3 p-2 text-muted-foreground hover:text-foreground w-[90%] h-fit text-base flex gap-2 items-center cursor-pointer rounded-sm bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                     <Plus class="size-5" />
                     <h1>New channel</h1>
                 </button>

@@ -59,7 +59,7 @@
 </script>
 
 <content class="flex items-center justify-center w-[7.5vw] ml-5 h-full">
-    <div class="bg-stone-200 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col gap-5 items-center py-5 w-full left-0 rounded-sm relative">
+    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col gap-5 items-center py-5 w-full left-0 rounded-sm relative">
         {#each records as record}
             {#if sessionStorage.getItem('NAV_PROJECT') === null}
                 {#await new Promise(resolve => {
@@ -90,7 +90,7 @@
             <Tooltip.Trigger>
                 <Dialog.Root>
                     <Dialog.Trigger>
-                        <button id="newProjectBTN" class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center hover:bg-stone-700 bg-stone-800">
+                        <button id="newProjectBTN" class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                             <Plus />
                         </button>
                     </Dialog.Trigger>
@@ -123,7 +123,7 @@
         </Tooltip.Root>
         <Popover.Root>
             <Popover.Trigger class="absolute bottom-0 mb-5">
-                <button class="mt-2 rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center hover:bg-stone-700 bg-stone-800">
+                <button class="mt-2 rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                     <CircleUserRound class="size-8" />
                 </button>
             </Popover.Trigger>

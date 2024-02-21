@@ -26,43 +26,45 @@
 
         console.log(path);
 
-        let serverItems = await pb.collection('TeamInvites').getFullList({
-            filter: `userInvited = "${pb.authStore.model.id}"`
-        });
+        if(pb.authStore.isValid) {
+            let serverItems = await pb.collection('TeamInvites').getFullList({
+                filter: `userInvited = "${pb.authStore.model.id}"`
+            });
 
-        serverItems.forEach(async (item) => {
-            try {
-                let response = await fetch(`${pb.baseUrl}/api/project/${item.project}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                let responseData = await response.json();
+            serverItems.forEach(async (item) => {
+                try {
+                    let response = await fetch(`${pb.baseUrl}/api/project/${item.project}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    let responseData = await response.json();
 
-                toast.info('You got a new invite!', {
-                    duration: Number.POSITIVE_INFINITY,
-                    description: `From: Team ${responseData.name}`,
-                    action: {
-                        label: 'Accept',
-                        onClick: async () => {
-                            let dataPrevious = await pb.collection('projects').getOne(item.project);
-                            let members = dataPrevious.members;
+                    toast.info('You got a new invite!', {
+                        duration: Number.POSITIVE_INFINITY,
+                        description: `From: Team ${responseData.name}`,
+                        action: {
+                            label: 'Accept',
+                            onClick: async () => {
+                                let dataPrevious = await pb.collection('projects').getOne(item.project);
+                                let members = dataPrevious.members;
 
-                            let data = {
-                                "members": members.concat(pb.authStore.model.id),
+                                let data = {
+                                    "members": members.concat(pb.authStore.model.id),
+                                }
+
+                                await pb.collection('projects').update(item.project, data);
+                                await pb.collection('TeamInvites').delete(item.id);
+                                
+                                toast.success(`You have joined ${responseData.name}`, { description: 'Ahoy, welcome onboard!' })
                             }
-
-                            await pb.collection('projects').update(item.project, data);
-                            await pb.collection('TeamInvites').delete(item.id);
-                            
-                            toast.success(`You have joined ${responseData.name}`, { description: 'Ahoy, welcome onboard!' })
-                        }
-                    },
-                });
-            } catch (error) {
-                console.error('Fetch failed:', error);
-            }
+                        },
+                    });
+                } catch (error) {
+                    console.error('Fetch failed:', error);
+                }
+            });
+            };
         });
-    });
 </script>
 
 <Toaster richColors theme={theme} />
