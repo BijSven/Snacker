@@ -35,6 +35,7 @@ routerAdd("POST", "/log/:token", (c) => {
     form.loadData({
         "icon": body.icon,
         "data": body.title,
+        "body": body.body,
         "source": body.source,
         "channel": Token.get('channel'),
     })
@@ -44,9 +45,6 @@ routerAdd("POST", "/log/:token", (c) => {
 
     $app.logger().info(
         `POST /log/${token}`,
-        "icon", body.icon,
-        "data", body.title,
-        "source", body.source,
         "channel", record.get('channel'),
     )
 

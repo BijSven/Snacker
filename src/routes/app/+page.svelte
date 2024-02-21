@@ -284,12 +284,10 @@
                                             const data = await response.json();
                                             return data.name;
                                         } catch (error) {
-                                            throw error;
+                                            return 'Unknown';
                                         }
                                     })() then name}
                                         {name}
-                                    {:catch error}
-                                        Error: {error.message}
                                     {/await}
                                 </Table.Cell>
                                 <Table.Cell>
