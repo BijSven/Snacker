@@ -61,7 +61,7 @@
 </script>
 
 {#if allProjects.length > 0}
-<content class="flex items-center justify-center w-[25vw] ml-5 h-full">
+<content class="flex items-center justify-center min-w-80 ml-5 h-full">
     <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] relative overflow-y-auto flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
         {#each records as record}
             <ContextMenu.Root>

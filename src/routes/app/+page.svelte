@@ -1,6 +1,7 @@
 <script>
     import ShowActivity from '$lib/components/activity/activityShow.svelte';
     import GridView from '$lib/components/dynamic/viewer.svelte';
+    import ContentView from '$lib/components/activity/preview.svelte';
 
     import * as Table from "$lib/components/ui/table";
     import * as Popover from "$lib/components/ui/popover";
@@ -9,13 +10,10 @@
     import { Button } from '$lib/components/ui/button';
     import { Input } from '$lib/components/ui/input';
 
-    import { version } from '$app/environment';
-
     import PocketBase from '$lib/pb';
 
     import { onMount } from 'svelte';
     import { toast } from 'svelte-sonner';
-	import { Package } from 'lucide-svelte';
     
 
     const pb = new PocketBase();
@@ -88,7 +86,7 @@
 </script>
 
 {#if allProjects.length > 0}
-<content class="flex items-center justify-center w-full mr-5 ml-5 h-full">
+<content class="flex items-center justify-center max-w-[100vw] overflow-hidden w-full mr-5 ml-5 h-full">
     <div class="h-[95vh] relative flex flex-col overflow-y-auto items-center gap-4 z-0 p-3 bg-stone-100 dark:bg-stone-900 rounded-sm w-full">
         {#if pageType == "default"}
             <div class="border-b min-h-12 h-12 w-full flex gap-2 text-muted-foreground justify-center items-center">
@@ -104,10 +102,12 @@
                 {/if}
             </div>
             {#each records as record}
-                <ShowActivity data={record} />
+                <ContentView data={record}>
+                    <ShowActivity data={record} />
+                </ContentView>
             {:else}
                 {#if location.channel}
-                    <h1>Couldn't find any logs 😅</h1>
+                    <h1 class="text-muted-foreground">Hmm, its empty here!</h1>
                 {/if}
             {/each}
             {#if !location.channel || location.channel == ''}
