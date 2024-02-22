@@ -158,7 +158,7 @@
                                         <div class="ml-5">
                                             "icon": "🥳",<br>
                                             "title": "New follower!",<br>
-                                            "body": "Good job!", <span class="text-muted-foreground">#? You can view this by clicking on the log.</span><br>
+                                            "body": "Good job!", <span class="text-muted-foreground"># You can view this by clicking on the log.</span><br>
                                             "source": "Twitch"<br>
                                         </div>
                                         {'}'}

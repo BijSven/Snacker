@@ -46,7 +46,7 @@
     </Dialog.Trigger>
     <Dialog.Portal>
         <Dialog.Overlay transitionConfig={{ duration: 150 }} transition={fade} class="fixed inset-0 z-50 bg-black/80"/>
-        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none sm:max-w-[490px] md:w-full" >
+        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-auto max-w-[60%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none" >
         <Dialog.Title>
             <p class="text-2xl w-[75%]">{data.data}</p>
         </Dialog.Title>
@@ -55,7 +55,9 @@
             <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%]">{formatDate(data.created)}<Clock class="size-4"/></p>
         </Dialog.Description>
         <div class="p-5 border-t relative">
-            <p class="whitespace-pre-wrap">{data.body}</p>
+            <div class="whitespace-pre-wrap">
+                {@html data.body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')}
+            </div>
             <Tooltip.Root>
                 <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
                     <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
