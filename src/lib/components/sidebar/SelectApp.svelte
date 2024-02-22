@@ -31,7 +31,9 @@
 
         try {
             await pb.collection('projects').create(sendData)
-            toast.success(`${data.get('name')} has been created!`)
+            toast.success(`${data.get('name')} has been created!`);
+
+            document.dispatchEvent(new CustomEvent('REFRESH_PROJECTS'));
         } catch (e) {
             toast.error('Some error occurred while creating your project!')
         }
@@ -59,70 +61,71 @@
 </script>
 
 <content class="flex items-center justify-center min-w-28 ml-5 h-full">
-    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col gap-5 items-center py-5 w-full left-0 rounded-sm relative">
-        {#each records as record}
-            {#if sessionStorage.getItem('NAV_PROJECT') === null}
-                {#await new Promise(resolve => {
-                    let key = 'NAV_PROJECT';
-                    let reset = 'NAV_CHANNEL';
+    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col items-center w-full left-0 rounded-sm relative">
+        <div class="overflow-y-scroll flex flex-col w-full h-full items-center gap-5 pt-5">
+            {#each records as record}
+                {#if sessionStorage.getItem('NAV_PROJECT') === null}
+                    {#await new Promise(resolve => {
+                        let key = 'NAV_PROJECT';
+                        let reset = 'NAV_CHANNEL';
 
-                    window.sessionStorage.setItem(reset, '');
-                    window.dispatchEvent(new StorageEvent('storage', { key: reset }));
+                        window.sessionStorage.setItem(reset, '');
+                        window.dispatchEvent(new StorageEvent('storage', { key: reset }));
 
-                    window.sessionStorage.setItem(key, record.id);
-                    window.dispatchEvent(new StorageEvent('storage', { key }));
-                    resolve();
-                })}
-                    {window.location.reload()}
-                {/await}
-            {/if}
+                        window.sessionStorage.setItem(key, record.id);
+                        window.dispatchEvent(new StorageEvent('storage', { key }));
+                        resolve();
+                    })}
+                        {window.location.reload()}
+                    {/await}
+                {/if}
+                <Tooltip.Root>
+                    <Tooltip.Trigger>
+                        <ProjectIcon project={record} />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                        <p class="select-none">{record.name}</p>
+                    </Tooltip.Content>
+                </Tooltip.Root>
+            {/each}
             <Tooltip.Root>
                 <Tooltip.Trigger>
-                    <ProjectIcon project={record} />
+                    <Dialog.Root>
+                        <Dialog.Trigger>
+                            <button id="newProjectBTN" class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
+                                <Plus />
+                            </button>
+                        </Dialog.Trigger>
+                        <Dialog.Content class="sm:max-w-[425px]">
+                            <Dialog.Header>
+                              <Dialog.Title>New project</Dialog.Title>
+                              <Dialog.Description>
+                                Lets get started with your new snacker-project!
+                              </Dialog.Description>
+                            </Dialog.Header>
+                            <form id="DATA_NEW-PJCT" class="grid gap-4 py-4">
+                                <div class="grid grid-cols-4 items-center gap-4">
+                                    <Label class="text-right">Name</Label>
+                                    <Input name='name' placeholder="My cool web-app" class="col-span-3" />
+                                </div>
+                                <div class="grid grid-cols-4 items-center gap-4">
+                                    <Label class="text-right">Logo</Label>
+                                    <Input name="logo" type="file" class="col-span-3 text-white" />
+                                </div>
+                            </form>
+                            <Dialog.Footer>
+                              <Button type="submit" on:click={createProject}>Save changes</Button>
+                            </Dialog.Footer>
+                          </Dialog.Content>
+                      </Dialog.Root>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
-                    <p class="select-none">{record.name}</p>
+                    <p class="select-none">New project</p>
                 </Tooltip.Content>
             </Tooltip.Root>
-        {/each}
-
-        <Tooltip.Root>
-            <Tooltip.Trigger>
-                <Dialog.Root>
-                    <Dialog.Trigger>
-                        <button id="newProjectBTN" class="rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
-                            <Plus />
-                        </button>
-                    </Dialog.Trigger>
-                    <Dialog.Content class="sm:max-w-[425px]">
-                        <Dialog.Header>
-                          <Dialog.Title>New project</Dialog.Title>
-                          <Dialog.Description>
-                            Lets get started with your new snacker-project!
-                          </Dialog.Description>
-                        </Dialog.Header>
-                        <form id="DATA_NEW-PJCT" class="grid gap-4 py-4">
-                            <div class="grid grid-cols-4 items-center gap-4">
-                                <Label class="text-right">Name</Label>
-                                <Input name='name' placeholder="My cool web-app" class="col-span-3" />
-                            </div>
-                            <div class="grid grid-cols-4 items-center gap-4">
-                                <Label class="text-right">Logo</Label>
-                                <Input name="logo" type="file" class="col-span-3 text-white" />
-                            </div>
-                        </form>
-                        <Dialog.Footer>
-                          <Button type="submit" on:click={createProject}>Save changes</Button>
-                        </Dialog.Footer>
-                      </Dialog.Content>
-                  </Dialog.Root>
-            </Tooltip.Trigger>
-            <Tooltip.Content>
-                <p class="select-none">New project</p>
-            </Tooltip.Content>
-        </Tooltip.Root>
+        </div>
         <Popover.Root>
-            <Popover.Trigger class="absolute bottom-0 mb-5">
+            <Popover.Trigger class="bottom-0 mb-5 mt-5">
                 <button class="mt-2 rounded-[100%] cursor-pointer text-xl hover:rounded-md min-h-16 min-w-16 duration-200 flex flex-col justify-center items-center bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                     <CircleUserRound class="size-8" />
                 </button>
