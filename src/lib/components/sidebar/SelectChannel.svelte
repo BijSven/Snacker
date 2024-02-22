@@ -62,20 +62,22 @@
 
 {#if allProjects.length > 0}
 <content class="flex items-center justify-center min-w-80 ml-5 h-full">
-    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] relative overflow-y-auto flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
-        {#each records as record}
-            <ContextMenu.Root>
-                <ContextMenu.Trigger class="w-full flex flex-col items-center">
-                    <Channel data={record} />
-                </ContextMenu.Trigger>
-                <ContextMenu.Content>
-                    <ContextMenu.Item on:click={async () => { await pb.collection('channels').delete(record.id); }} class="flex px-5 text-red-500 gap-2"><DoorOpen class="size-4" /> Delete channel</ContextMenu.Item>
-                </ContextMenu.Content>
-            </ContextMenu.Root>
-        {:else}
-            <h1 class="text-muted-foreground w-[80%] text-center">There are no channels, try creating one!</h1>
-        {/each}
-        <div class="flex flex-col mb-5 bottom-0 absolute w-full justify-center items-center gap-3">
+    <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] relative flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
+        <div class="overflow-y-scroll flex flex-col pb-5 gap-3 overflow-x-hidden w-full h-full">
+            {#each records as record}
+                <ContextMenu.Root>
+                    <ContextMenu.Trigger class="w-full flex flex-col items-center">
+                        <Channel data={record} />
+                    </ContextMenu.Trigger>
+                    <ContextMenu.Content>
+                        <ContextMenu.Item on:click={async () => { await pb.collection('channels').delete(record.id); }} class="flex px-5 text-red-500 gap-2"><DoorOpen class="size-4" /> Delete channel</ContextMenu.Item>
+                    </ContextMenu.Content>
+                </ContextMenu.Root>
+            {:else}
+                <h1 class="text-muted-foreground w-[80%] text-center">There are no channels, try creating one!</h1>
+            {/each}
+        </div>
+        <div class="flex h-max flex-col mb-1 bottom-0 w-full justify-center items-center gap-3">
             <button on:click={() => { sessionStorage.setItem('VIEW_PAGETYPE', 'settings'); window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' })) }} class="duration-200 pl-3 p-2 text-muted-foreground hover:text-foreground w-[90%] h-fit text-base flex gap-2 items-center cursor-pointer rounded-sm bg-stone-300 hover:bg-stone-200 hover:dark:bg-stone-700 dark:bg-stone-800">
                 <Settings class="size-5" />
                 <h1>Settings</h1>
