@@ -22,7 +22,7 @@
     <div>
         <h1 class="text-xl text-left">{data.data}</h1>
         <div class="flex gap-2 select-none text-muted-foreground w-[100%] overflow-hidden">
-            <p>{data.source}</p>
+            <p class="w-[40%] overflow-hidden text-ellipsis whitespace-nowrap">{data.source}</p>
             <p>•</p>
             <p>{formatDate(data.created)}</p>
         </div>

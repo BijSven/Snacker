@@ -46,28 +46,28 @@
     </Dialog.Trigger>
     <Dialog.Portal>
         <Dialog.Overlay transitionConfig={{ duration: 150 }} transition={fade} class="fixed inset-0 z-50 bg-black/80"/>
-        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none sm:max-w-[490px] md:w-full" >
+        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none sm:max-w-[490px] md:w-full" >
         <Dialog.Title>
-            <p class="text-2xl">{data.data}</p>
+            <p class="text-2xl w-[75%]">{data.data}</p>
         </Dialog.Title>
-        <Dialog.Description class="flex justify-between items-center h-max mb-3 border p-4 mt-4 rounded-sm">
-            <p class="text-foreground flex gap-2 justify-center items-center"><Goal class="size-5"/>{data.source}</p>
-            <p class="text-muted-foreground flex gap-2 select-none justify-center items-center ">{formatDate(data.created)}<Clock class="size-4"/></p>
+        <Dialog.Description class="flex justify-between items-center h-max mb-3 border p-4 mt-4 rounded-sm overflow-x-scroll">
+            <p class="text-foreground flex gap-2 justify-center items-center w-[55%] text-ellipsis whitespace-nowrap overflow-x-hidden"><Goal class="size-5"/>{data.source}</p>
+            <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%]">{formatDate(data.created)}<Clock class="size-4"/></p>
         </Dialog.Description>
-        <div class="p-5 border-t">
-            <p>{data.body}</p>
+        <div class="p-5 border-t relative">
+            <p class="whitespace-pre-wrap">{data.body}</p>
+            <Tooltip.Root>
+                <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
+                    <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
+                        <Trash2 class="size-5" />
+                    </button>
+                </Tooltip.Trigger>
+                <Tooltip.Content>
+                    <p>Delete item</p>
+                </Tooltip.Content>
+            </Tooltip.Root>
         </div>
-        <Tooltip.Root>
-            <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
-                <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
-                    <Trash2 class="size-5" />
-                </button>
-            </Tooltip.Trigger>
-            <Tooltip.Content>
-                <p>Delete item</p>
-            </Tooltip.Content>
-        </Tooltip.Root>
-        <Dialog.Close class="absolute top-0 mt-3 mr-3 right-0">
+        <Dialog.Close class="fixed top-0 mt-3 mr-3 right-0">
             <X />
         </Dialog.Close>
         </Dialog.Content>
