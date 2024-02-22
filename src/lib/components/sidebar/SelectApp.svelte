@@ -58,7 +58,7 @@
     })
 </script>
 
-<content class="flex items-center justify-center w-[7.5vw] ml-5 h-full">
+<content class="flex items-center justify-center min-w-28 ml-5 h-full">
     <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col gap-5 items-center py-5 w-full left-0 rounded-sm relative">
         {#each records as record}
             {#if sessionStorage.getItem('NAV_PROJECT') === null}

@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\bin\yarn.js add @types/url
+  C:\Program Files\nodejs\node.exe C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\bin\yarn.js add bits-ui
 
 PATH: 
   C:\Program Files (x86)\VMware\VMware Player\bin\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\WireGuard\;C:\Program Files\Coder\bin;C:\Program Files\Git\cmd;C:\Program Files\Cloudflare\Cloudflare WARP\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\GitHub CLI\;C:\Program Files\Tailscale\;C:\Program Files (x86)\Go\bin;C:\Users\sven-\scoop\shims;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\WireGuard\;C:\Program Files\Coder\bin;C:\Program Files\Git\cmd;C:\Program Files\Cloudflare\Cloudflare WARP\;C:\Program Files\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\chocolatey\bin;C:\Users\sven-\flutter\flutter\bin\;C:\Users\sven-\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\sven-\AppData\Local\Programs\Python\Python311\;C:\Users\sven-\flutter\flutter\bin;C:\Users\sven-\AppData\Local\Programs\Microsoft VS Code\bin;[path_to_firebase_cli];C:\Users\sven-\AppData\Roaming\npm;C:\Users\sven-\AppData\Local\spicetify;C:\Users\sven-\AppData\Local\Pandoc\;C:\Users\sven-\go\bin
@@ -14,22 +14,12 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.npmjs.org/@types%2furl: Not found
-      at params.callback [as _callback] (C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\lib\cli.js:66145:18)
-      at self.callback (C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\lib\cli.js:140890:22)
-      at Request.emit (node:events:513:28)
-      at Request.<anonymous> (C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\lib\cli.js:141862:10)
-      at Request.emit (node:events:513:28)
-      at IncomingMessage.<anonymous> (C:\Users\sven-\AppData\Local\node\corepack\yarn\1.22.19\lib\cli.js:141784:12)
-      at Object.onceWrapper (node:events:627:28)
-      at IncomingMessage.emit (node:events:525:35)
-      at endReadableNT (node:internal/streams/readable:1359:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+  Error: EPERM: operation not permitted, unlink 'D:\Projects\Snacker\node_modules\@rollup\rollup-win32-x64-msvc\rollup.win32-x64-msvc.node'
 
 npm manifest: 
   {
   	"name": "snacker",
-  	"version": "0.1.4",
+  	"version": "0.1.5",
   	"private": true,
   	"type": "module",
   	"scripts": {
