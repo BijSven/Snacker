@@ -11,6 +11,7 @@
 
     import PocketBase from "$lib/pb";
     import Snacker from '$lib/sdk.js';
+	import { onMount } from "svelte";
 
     const pb = new PocketBase();
     const sk = new Snacker('uuop9nubbp1zrt5');
@@ -18,6 +19,7 @@
     let data = {
         "icon": project.name.split(' ').map(word => word.charAt(0)).join('')
     }
+
 
     async function leaveProject() {
         let user = pb.authStore.model;
@@ -63,7 +65,7 @@
                 {#if !project.logo}
                     <h1>{data.icon}</h1>
                 {:else}
-                    <img class="size-12 rounded-full" alt="Logo" src={`https://snacker.db.orae.one/api/files/projects/${project.id}/${project.logo}`}>
+                    <img class="size-12 rounded-full" alt="Logo" src={pb.files.getUrl(project, project.logo, {'thumb': '100x100'})}>
                 {/if}
             </button>
         </ContextMenu.Trigger>
