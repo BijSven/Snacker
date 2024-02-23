@@ -22,9 +22,9 @@
     <div>
         <h1 class="text-xl text-left w-[95%]">{data.data}</h1>
         <div class="flex gap-2 select-none text-muted-foreground w-[100%] overflow-hidden">
-            <p class="w-32 overflow-hidden text-ellipsis whitespace-nowrap">{data.source}</p>
+            <p class="max-w-32 w-auto overflow-hidden text-ellipsis whitespace-nowrap">{data.source}</p>
             <p>•</p>
-            <p class="">{formatDate(data.created)}</p>
+            <p>{formatDate(data.created)}</p>
         </div>
     </div>
 </content>
