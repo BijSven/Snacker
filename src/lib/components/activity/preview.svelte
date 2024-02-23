@@ -51,8 +51,8 @@
             <p class="text-2xl w-[75%]">{data.data}</p>
         </Dialog.Title>
         <Dialog.Description class="flex justify-between items-center h-max mb-3 border p-4 mt-4 rounded-sm overflow-x-scroll">
-            <p class="text-foreground flex gap-2 justify-center items-center w-[55%] text-ellipsis whitespace-nowrap overflow-x-hidden"><Goal class="size-5"/>{data.source}</p>
-            <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%]">{formatDate(data.created)}<Clock class="size-4"/></p>
+            <p class="text-foreground flex gap-2 justify-center items-center max-w-[55%] text-ellipsis whitespace-nowrap overflow-x-hidden"><Goal class="size-5"/>{data.source}</p>
+            <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%] max-w-[45%] text-ellipsis whitespace-nowrap overflow-x-hidden">{formatDate(data.created)}<Clock class="size-4"/></p>
         </Dialog.Description>
         {#if data.body}
             <div class="p-5 border-t relative">
