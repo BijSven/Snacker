@@ -18,6 +18,7 @@
     import { toast } from 'svelte-sonner';
 
     const pb = new PocketBase();
+    pb.autoCancellation(false);
 
     let records = [];
     let allProjects = [];
@@ -52,7 +53,7 @@
             }
         }, false);
         updateChannels();
-        pb.collection('channels').subscribe('*', updateChannels);
+        pb.collection('channels').subscribe('*', updateChannels, { filter: `project.id = "${sessionStorage.getItem('NAV_PROJECT')}"` });
 
         allProjects = await pb.collection('projects').getFullList({
             sort: '-created',
