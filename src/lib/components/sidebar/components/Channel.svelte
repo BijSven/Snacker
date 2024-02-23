@@ -1,14 +1,10 @@
 <script>
     import { Hash } from 'lucide-svelte';
-    import Snacker from '$lib/sdk.js';
 
     export let data;
-    const sk = new Snacker('uuop9nubbp1zrt5');
 
     async function updateData() {
         let key = 'NAV_CHANNEL';
-
-        sk.sendLog('🚅', 'Switched channel', 'Snacker/Channels');
 
         sessionStorage.setItem('VIEW_PAGETYPE', 'default');
         window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' }));

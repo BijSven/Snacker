@@ -2,9 +2,7 @@
     import * as Command from "$lib/components/ui/command";
     import PocketBase from "$lib/pb";
     import { onMount } from "svelte";
-    import Snacker from '$lib/sdk.js';
 
-    const sk = new Snacker('uuop9nubbp1zrt5');
     const pb = new PocketBase();
     pb.autoCancellation(false);
    
@@ -58,8 +56,6 @@
       let key = 'NAV_PROJECT';
       let reset = 'NAV_CHANNEL';
 
-      sk.sendLog('😅', 'User switched project', 'Snacker/Projects');
-
       window.sessionStorage.setItem(reset, '');
       window.dispatchEvent(new StorageEvent('storage', { key: reset }));
 
@@ -71,8 +67,6 @@
 
     function updateChannelContext(record) {
       let key = 'NAV_CHANNEL';
-
-      sk.sendLog('🚅', 'Switched channel', 'Snacker/Channels');
 
       sessionStorage.setItem('VIEW_PAGETYPE', 'default');
       window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' }));

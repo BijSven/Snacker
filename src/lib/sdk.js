@@ -1,13 +1,13 @@
 class Snacker {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.apiUrl = `https://snacker.db.orae.one/log/`;
     }
 
-    sendLog(icon, title, source) {
+    track(icon, title, body, source) {
         const requestBody = {
             icon: icon,
             title: title,
+            body: body,
             source: source
         };
 
@@ -19,7 +19,7 @@ class Snacker {
             body: JSON.stringify(requestBody)
         };
 
-        fetch(`${this.apiUrl}${this.apiKey}`, options)
+        fetch(`https://snacker.db.orae.one/log/${this.apiKey}`, options)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -27,8 +27,8 @@ class Snacker {
             return response.json();
         })
         .catch(error => {
-            console.error(`[SNACKER] Some error occured!`);
-            console.error(`[SNACKER] -> SDK -> ERROR: ${error}`);
+            console.error(`[SNACKER] Some error occured, are you connected to internet?`);
+            console.error(`Error: ${error}`);
         });
     }
 }

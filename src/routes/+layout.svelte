@@ -64,8 +64,8 @@
                     console.error('Fetch failed:', error);
                 }
             });
-            };
-        });
+        };
+    });
 </script>
 
 <Toaster richColors theme={theme} />
