@@ -96,7 +96,7 @@
 <Grid bind:controller={gridController} collision="push" {itemSize}>
 	{#each items as item}
 		<GridItem resizable={false} class="flex gap-4 rounded-sm p-5 place-items-center rounded-s rounded-e bg-stone-200 dark:bg-stone-800 overflow-hidden" bind:x={item.x} bind:y={item.y}>
-            <h1 class="size-12 rounded-sm flex justify-center items-center text-2xl select-none">✨</h1>
+            <h1 class="size-12 rounded-sm flex justify-center items-center text-2xl select-none">{['😀', '😎', '🥳', '🚀', '🌈', '🎉', '🤖', '🌍', '🌟', '🍕'][Math.floor(Math.random() * 10)]}</h1>
             <div>
                 <h1 class="text-xl">
                     {#await (async () => {
