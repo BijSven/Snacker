@@ -46,7 +46,7 @@
     </Dialog.Trigger>
     <Dialog.Portal>
         <Dialog.Overlay transitionConfig={{ duration: 150 }} transition={fade} class="fixed inset-0 z-50 bg-black/80"/>
-        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-auto max-w-[60%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none" >
+        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-auto max-w-[60%] min-w-[25%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none" >
         <Dialog.Title>
             <p class="text-2xl w-[75%]">{data.data}</p>
         </Dialog.Title>
@@ -54,7 +54,7 @@
             <p class="text-foreground flex gap-2 justify-center items-center w-[55%] text-ellipsis whitespace-nowrap overflow-x-hidden"><Goal class="size-5"/>{data.source}</p>
             <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%]">{formatDate(data.created)}<Clock class="size-4"/></p>
         </Dialog.Description>
-        <div class="p-5 border-t relative">
+        <div class="p-5 pb-10 border-t relative">
             <div class="whitespace-pre-wrap">
                 {@html data.body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')}
             </div>
