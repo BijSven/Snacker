@@ -60,7 +60,7 @@
                     {@html data.body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')}
                 </div>
                 <Tooltip.Root>
-                    <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
+                    <Tooltip.Trigger class="absolute bottom-0 right-0 mb-1 mr-1">
                         <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
                             <Trash2 class="size-5" />
                         </button>
