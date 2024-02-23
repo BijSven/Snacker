@@ -8,6 +8,7 @@
     import '$lib/dark.js';
     import SelectApp from '$lib/components/sidebar/SelectApp.svelte';
     import SelectChannel from '$lib/components/sidebar/SelectChannel.svelte';
+    import UseCommands from './app/command.svelte';
 
     const pb = new PocketBase();
 
@@ -74,6 +75,7 @@
     <content class="flex h-full w-full">
         <SelectApp/>
         <SelectChannel/>
+        <UseCommands/>
         <slot />
     </content>
 {/if}
