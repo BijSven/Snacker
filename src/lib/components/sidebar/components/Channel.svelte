@@ -10,6 +10,8 @@
 
         sk.sendLog('🚅', 'Switched channel', 'Snacker/Channels');
 
+        sessionStorage.setItem('VIEW_PAGETYPE', 'default');
+        window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' }));
         window.sessionStorage.setItem(key, data.id);
         window.dispatchEvent(new StorageEvent('storage', { key }));
     }
