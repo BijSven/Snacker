@@ -54,21 +54,36 @@
             <p class="text-foreground flex gap-2 justify-center items-center w-[55%] text-ellipsis whitespace-nowrap overflow-x-hidden"><Goal class="size-5"/>{data.source}</p>
             <p class="text-muted-foreground flex gap-2 select-none justify-center items-center min-w-[40%]">{formatDate(data.created)}<Clock class="size-4"/></p>
         </Dialog.Description>
-        <div class="p-5 pb-10 border-t relative">
-            <div class="whitespace-pre-wrap">
-                {@html data.body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')}
+        {#if data.body}
+            <div class="p-5 border-t relative">
+                <div class="whitespace-pre-wrap">
+                    {@html data.body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')}
+                </div>
+                <Tooltip.Root>
+                    <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
+                        <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
+                            <Trash2 class="size-5" />
+                        </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                        <p>Delete item</p>
+                    </Tooltip.Content>
+                </Tooltip.Root>
             </div>
-            <Tooltip.Root>
-                <Tooltip.Trigger class="absolute bottom-0 right-0 mb-3 mr-3">
-                    <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
-                        <Trash2 class="size-5" />
-                    </button>
-                </Tooltip.Trigger>
-                <Tooltip.Content>
-                    <p>Delete item</p>
-                </Tooltip.Content>
-            </Tooltip.Root>
-        </div>
+        {:else}
+            <div class="w-full pt-3 flex justify-end items-center h-full">
+                <Tooltip.Root>
+                    <Tooltip.Trigger class="bottom-0 right-0 mb-3 mr-3">
+                        <button on:click={deleteItem} class="p-2 rounded-sm cursor-pointer text-muted-foreground hover:text-foreground duration-200 border">
+                            <Trash2 class="size-5" />
+                        </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                        <p>Delete item</p>
+                    </Tooltip.Content>
+                </Tooltip.Root>
+            </div>
+        {/if}
         <Dialog.Close class="fixed top-0 mt-3 mr-3 right-0">
             <X />
         </Dialog.Close>
