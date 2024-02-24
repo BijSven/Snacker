@@ -40,6 +40,7 @@
 		"cmdk-sv": "^0.0.13",
 		"fs": "^0.0.1-security",
 		"lucide-svelte": "^0.331.0",
+		"paneforge": "^0.0.2",
 		"svelte-grid-extended": "^1.1.4",
 		"svelte-headless-table": "^0.18.2",
 		"svelte-sonner": "^0.3.17",
