@@ -1,6 +1,7 @@
 <script>
     import * as ContextMenu from "$lib/components/ui/context-menu";
     import * as Tooltip from "$lib/components/ui/tooltip";
+    
     import * as Dialog from "$lib/components/ui/dialog";
 
     import { Input } from "$lib/components/ui/input";
@@ -68,13 +69,38 @@
         <div class="overflow-y-auto flex flex-col pb-5 gap-3 overflow-x-hidden w-full h-full">
             {#each records as record}
                 <ContextMenu.Root>
-                    <ContextMenu.Trigger class="w-full flex flex-col items-center">
-                        <Channel data={record} />
-                    </ContextMenu.Trigger>
-                    <ContextMenu.Content>
-                        <ContextMenu.Item class="flex px-5 gap-2"><Pencil class="size-4" /> Edit channel</ContextMenu.Item>
-                        <ContextMenu.Item on:click={async () => { await pb.collection('channels').delete(record.id); }} class="flex px-5 text-red-500 gap-2"><DoorOpen class="size-4" /> Delete channel</ContextMenu.Item>
-                    </ContextMenu.Content>
+                    <Dialog.Root>
+                        <ContextMenu.Trigger class="w-full flex flex-col items-center">
+                            <Channel data={record} />
+                        </ContextMenu.Trigger>
+                        <ContextMenu.Content>                            
+                            <Dialog.Trigger class="w-full"><ContextMenu.Item class="flex px-5 gap-2"><Pencil class="size-4" /> Edit channel</ContextMenu.Item></Dialog.Trigger>
+                            <ContextMenu.Item on:click={async () => { await pb.collection('channels').delete(record.id); }} class="flex px-5 text-red-500 gap-2"><DoorOpen class="size-4" /> Delete channel</ContextMenu.Item>
+                        </ContextMenu.Content>
+                        <Dialog.Content>
+                            <form on:submit|preventDefault={async (event) => {
+                                const formData = new FormData(event.target);
+
+                                let data = {
+                                    name: formData.get('Channelname'),
+                                }
+
+                                await pb.collection('channels').update(record.id, data);
+
+                                toast.success('The channel has been updated!');
+                            }} name="channel" class="flex flex-col gap-5">
+                                <Dialog.Header>
+                                    <Dialog.Title>Edit channel</Dialog.Title>
+                                    <Dialog.Description>
+                                        <Input name="Channelname" class="mt-5" placeholder="Channelname" value={record.name}/>
+                                    </Dialog.Description>
+                                </Dialog.Header>
+                                <Dialog.Footer>
+                                    <Button type="submit">Save changes</Button>
+                                </Dialog.Footer>
+                            </form>
+                        </Dialog.Content>
+                    </Dialog.Root>
                 </ContextMenu.Root>
             {:else}
                 <h1 class="text-muted-foreground w-[80%] text-center">There are no channels, try creating one!</h1>
