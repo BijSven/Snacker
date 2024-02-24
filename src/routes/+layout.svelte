@@ -79,14 +79,14 @@
     <content class="flex h-full w-full">
             <Resizable.PaneGroup direction="horizontal" class="p-5 rounded-sm">
                 <Resizable.Pane maxSize={10} minSize={6.5} collapsible={true} defaultSize={8}><SelectApp/></Resizable.Pane>
-                <Resizable.Handle class="mx-3" />
+                <Resizable.Handle class="mx-3 bg-transparent hover:bg-gray-500" />
                 {#if SETTING_VIEWTEMPLATE == "default"}
                     <Resizable.Pane maxSize={25} minSize={20} collapsible={true} defaultSize={20}><SelectChannel/></Resizable.Pane>
-                    <Resizable.Handle class="mx-3" />
+                    <Resizable.Handle class="mx-3 hover:bg-gray-500" />
                     <Resizable.Pane defaultSize={70} class="rounded-lg"><slot /></Resizable.Pane>
                 {:else}
                     <Resizable.Pane defaultSize={70} class="rounded-lg"><slot /></Resizable.Pane>
-                    <Resizable.Handle class="mx-3" />
+                    <Resizable.Handle class="mx-3 hover:bg-gray-500" />
                     <Resizable.Pane maxSize={25} minSize={20} collapsible={true} defaultSize={20}><SelectChannel/></Resizable.Pane>
                 {/if}
             </Resizable.PaneGroup>            
