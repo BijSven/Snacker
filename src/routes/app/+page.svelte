@@ -19,8 +19,6 @@
     const pb = new PocketBase();
     pb.autoCancellation(false);
 
-    const appVersion = import.meta.env.VITE_APP_VERSION;
-
     let records = [];
     let tokens = [];
     let teamMembers = [];
@@ -120,7 +118,6 @@
                 <div class="h-full w-full overflow-y-hidden">
                     <GridView />
                 </div>
-                    <h1 class="text-muted-foreground absolute mb-2 bottom-0">Snacker v{appVersion}</h1>
             {/if}
         {/if}
         {#if pageType == "settings"}

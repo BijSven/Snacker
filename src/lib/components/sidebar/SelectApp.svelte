@@ -2,12 +2,14 @@
     import * as Tooltip from "$lib/components/ui/tooltip";
     import * as Dialog from "$lib/components/ui/dialog";
     import * as Popover from "$lib/components/ui/popover";
-
+    
     import ProjectIcon from './components/ProjectIcon.svelte';
     import { Input } from "$lib/components/ui/input";
+    import { Switch } from "$lib/components/ui/switch";
     import { Button } from "$lib/components/ui/button";
     import { Label } from "$lib/components/ui/label";
     import { Plus } from 'lucide-svelte';
+    import { LogOut } from 'lucide-svelte';
     import { CircleUserRound } from 'lucide-svelte';
 
     import PocketBase from '$lib/pb';
@@ -18,6 +20,8 @@
     const pb = new PocketBase();
 
     let records = [];
+    const appVersion = import.meta.env.VITE_APP_VERSION;
+    let modernMode;
 
 
     async function createProject() {
@@ -54,6 +58,12 @@
     }
 
     onMount(async () => {
+        if(localStorage.getItem('SETTING_VIEWTEMPLATE')) {
+            modernMode = localStorage.getItem('SETTING_VIEWTEMPLATE') == 'default' ? false : true;
+        } else {
+            modernMode = false;
+        }
+
         pb.collection('projects').subscribe('*', fetchData);
         document.addEventListener('REFRESH_PROJECTS', fetchData);
         fetchData();
@@ -130,16 +140,36 @@
                     <CircleUserRound class="size-8" />
                 </button>
             </Popover.Trigger>
-            <Popover.Content class="ml-5 flex flex-col gap-4 w-max">
-                <h1>Your account</h1>
-                <div class="flex items-center relative gap-5">
+            <Popover.Content class="ml-5 flex flex-col gap-7 w-96 h-96   p-5 overflow-y-scroll">
+                <h1 class="text-2xl">Your account</h1>
+                <div class="flex items-center relative space-x-2">
                     <h1>Account ID</h1>
                     <h2 class="absolute right-0">{pb.authStore.model.id}</h2>
                 </div>
-                <div class="flex items-center justify-center relative gap-3 my-1 w-max">
-                    <Button variant="outline" on:click={() => {toast.error('Invalid function!')}} class="h-8">Change mail</Button>
-                    <Button variant="outline" on:click={() => {sessionStorage.clear(); localStorage.clear();}} class="h-8">Reset</Button>
-                    <Button variant="destructive" on:click={() => {pb.authStore.clear(); sessionStorage.clear(); localStorage.clear(); window.location.reload()}} class="h-8">Logout</Button>
+                <div class="flex items-center relative space-x-2">
+                    <Label for="modern-mode">Alternative View</Label>
+                    <Switch bind:checked={modernMode} on:click={() => {
+                        toast.warning('Unapplied changes', {
+                            duration: Number.POSITIVE_INFINITY,
+                            description: `To apply your changes, refresh.`,
+                            action: {
+                                label: 'Refresh',
+                                onClick: async () => {
+                                    window.location.reload();
+                                }
+                            },
+                        });
+
+                        if(modernMode == false) {
+                            localStorage.setItem('SETTING_VIEWTEMPLATE', 'modernMode');
+                        } else {
+                            localStorage.setItem('SETTING_VIEWTEMPLATE', 'default');
+                        }
+                    }} class="absolute right-0" id="modern-mode" />
+                </div>
+                <div class="flex border-t pt-5 absolute justify-self-center self-center bottom-0 items-center px-5 flex-row justify-between w-[90%] mb-5 gap-5">
+                    <h1 class="text-muted-foreground">Snacker v{appVersion}</h1>
+                    <Button variant="outline" on:click={() => {pb.authStore.clear(); sessionStorage.clear(); localStorage.clear(); window.location.reload()}}><LogOut /></Button>
                 </div>
             </Popover.Content>
         </Popover.Root>
