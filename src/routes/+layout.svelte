@@ -8,6 +8,7 @@
     import '$lib/dark.js';
     import SelectApp from '$lib/components/sidebar/SelectApp.svelte';
     import SelectChannel from '$lib/components/sidebar/SelectChannel.svelte';
+    import * as Resizable from "$lib/components/ui/resizable";
     import UseCommands from './app/command.svelte';
 
     const pb = new PocketBase();
@@ -73,9 +74,13 @@
     <slot />
 {:else}
     <content class="flex h-full w-full">
-        <SelectApp/>
-        <SelectChannel/>
+        <Resizable.PaneGroup direction="horizontal" class="p-5 rounded-sm">
+            <Resizable.Pane maxSize={10} minSize={6.5} collapsible={true} defaultSize={8}><SelectApp/></Resizable.Pane>
+            <Resizable.Handle class="mx-3" />
+            <Resizable.Pane maxSize={25} minSize={20} collapsible={true} defaultSize={20}><SelectChannel/></Resizable.Pane>
+            <Resizable.Handle class="mx-3" />
+            <Resizable.Pane defaultSize={70} class="rounded-lg"><slot /></Resizable.Pane>
+        </Resizable.PaneGroup>
         <UseCommands/>
-        <slot />
     </content>
 {/if}

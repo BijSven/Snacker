@@ -46,7 +46,7 @@
     </Dialog.Trigger>
     <Dialog.Portal>
         <Dialog.Overlay transitionConfig={{ duration: 150 }} transition={fade} class="fixed inset-0 z-50 bg-black/80"/>
-        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-auto max-w-[60%] min-w-[25%] max-h-[80%] overflow-y-scroll overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none" >
+        <Dialog.Content transition={flyAndScale} class="rounded-sm fixed left-[50%] top-[50%] z-50 w-auto max-w-[60%] min-w-[25%] max-h-[80%] overflow-y-auto overflow-x-hidden translate-x-[-50%] translate-y-[-50%] rounded-card-lg border bg-background p-5 shadow-popover outline-none" >
         <Dialog.Title>
             <p class="text-2xl w-[75%]">{data.data}</p>
         </Dialog.Title>

@@ -60,9 +60,9 @@
     })
 </script>
 
-<content class="flex items-center justify-center min-w-28 ml-5 h-full">
+<content class="flex items-center justify-center min-w-[90%] h-full">
     <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] overflow-y-auto flex flex-col items-center w-full left-0 rounded-sm relative">
-        <div class="overflow-y-scroll flex flex-col w-full h-full items-center gap-5 pt-5">
+        <div class="overflow-y-auto flex flex-col w-full h-full items-center gap-5 pt-5">
             {#each records as record}
                 {#if sessionStorage.getItem('NAV_PROJECT') === null}
                     {#await new Promise(resolve => {
@@ -139,7 +139,7 @@
                 <div class="flex items-center justify-center relative gap-3 my-1 w-max">
                     <Button variant="outline" on:click={() => {toast.error('Invalid function!')}} class="h-8">Change mail</Button>
                     <Button variant="outline" on:click={() => {sessionStorage.clear(); localStorage.clear();}} class="h-8">Reset</Button>
-                    <Button variant="destructive" on:click={() => {pb.authStore.clear(); window.location.reload()}} class="h-8">Logout</Button>
+                    <Button variant="destructive" on:click={() => {pb.authStore.clear(); sessionStorage.clear(); localStorage.clear(); window.location.reload()}} class="h-8">Logout</Button>
                 </div>
             </Popover.Content>
         </Popover.Root>

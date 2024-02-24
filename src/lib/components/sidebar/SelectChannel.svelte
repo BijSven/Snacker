@@ -16,6 +16,7 @@
     import { DoorOpen } from 'lucide-svelte';
     import { Settings } from 'lucide-svelte';
     import { toast } from 'svelte-sonner';
+    import { Pencil } from 'lucide-svelte';
 
     const pb = new PocketBase();
     pb.autoCancellation(false);
@@ -62,15 +63,16 @@
 </script>
 
 {#if allProjects.length > 0}
-<content class="flex items-center justify-center min-w-80 ml-5 h-full">
+<content class="flex items-center justify-center min-w-[80%] h-full">
     <div class="bg-stone-100 dark:bg-stone-900 h-[95vh] relative flex flex-col gap-3 items-center py-5 w-full left-0 rounded-sm">
-        <div class="overflow-y-scroll flex flex-col pb-5 gap-3 overflow-x-hidden w-full h-full">
+        <div class="overflow-y-auto flex flex-col pb-5 gap-3 overflow-x-hidden w-full h-full">
             {#each records as record}
                 <ContextMenu.Root>
                     <ContextMenu.Trigger class="w-full flex flex-col items-center">
                         <Channel data={record} />
                     </ContextMenu.Trigger>
                     <ContextMenu.Content>
+                        <ContextMenu.Item class="flex px-5 gap-2"><Pencil class="size-4" /> Edit channel</ContextMenu.Item>
                         <ContextMenu.Item on:click={async () => { await pb.collection('channels').delete(record.id); }} class="flex px-5 text-red-500 gap-2"><DoorOpen class="size-4" /> Delete channel</ContextMenu.Item>
                     </ContextMenu.Content>
                 </ContextMenu.Root>
