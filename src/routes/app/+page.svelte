@@ -134,8 +134,8 @@
                 <p>/</p>
                 <p class="text-foreground">Settings</p>
             </div>
-            <section>
-                <div class="border-b w-[60vw] h-max relative flex my-5 pb-5 items-center">
+            <section class="min-w-[80%]">
+                <div class="border-b h-max relative flex my-5 pb-5 items-center">
                     <h1 class="text-2xl left-0">Tokens</h1>
                     <div class="absolute right-0 flex justify-center items-center gap-4">
                         <AlertDialog.Root>
@@ -228,8 +228,8 @@
                     </Table.Body>
                 </Table.Root>
             </section>
-            <section>
-                <div class="border-b w-[60vw] h-max relative flex my-5 pb-5 items-center">
+            <section class="min-w-[80%]">
+                <div class="border-b h-max relative flex my-5 pb-5 items-center">
                     <h1 class="text-2xl left-0">Team members</h1>
                     <div class="absolute right-0 flex justify-center items-center gap-4">
                         <Popover.Root bind:open={STATUS_InviteUserOpen}>
