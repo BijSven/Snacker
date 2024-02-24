@@ -8,6 +8,7 @@
     let items = [];
     let init = false;
     let gridController;
+    let clicked;
 
     async function loadItems() {
         const navProject = sessionStorage.getItem('NAV_PROJECT');
@@ -87,6 +88,15 @@
         }
     }, false);
 
+    addEventListener("dblclick", () => { 
+        let key = 'NAV_CHANNEL';
+
+        sessionStorage.setItem('VIEW_PAGETYPE', 'default');
+        window.dispatchEvent(new StorageEvent('storage', { key: 'VIEW_PAGETYPE' }));
+        window.sessionStorage.setItem(key, clicked);
+        window.dispatchEvent(new StorageEvent('storage', { key }));
+    });
+
     $: { loadItems() }
     $: if(init = true) { localStorage.setItem(`DATA_DB-${sessionStorage.getItem('NAV_PROJECT')}`, JSON.stringify(items)) };
 
@@ -95,6 +105,7 @@
 
 <Grid bind:controller={gridController} collision="push" {itemSize}>
 	{#each items as item}
+    <button on:click={() => { clicked = item.data.text }}>
 		<GridItem resizable={false} class="flex gap-4 rounded-sm p-5 place-items-center rounded-s rounded-e bg-stone-200 dark:bg-stone-800 overflow-hidden" bind:x={item.x} bind:y={item.y}>
             <h1 class="size-12 rounded-sm flex justify-center items-center text-2xl select-none">{['😀', '😎', '🥳', '🚀', '🌈', '🎉', '🤖', '🌍', '🌟', '🍕'][Math.floor(Math.random() * 10)]}</h1>
             <div>
@@ -171,5 +182,6 @@
                 </p>
             </div>
 		</GridItem>
+    </button>
 	{/each}
 </Grid>
