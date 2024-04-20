@@ -26,8 +26,8 @@
             }));
             localStorage.setItem('TIPS_LOADED', true);
         } if(localStorage.getItem('TIPS_LOADED')) {
-            toast.info(JSON.parse(localStorage.getItem('TIPS_VALUE').title), {
-                description: JSON.parse(localStorage.getItem('TIPS_VALUE').description)
+            toast.info(JSON.parse(localStorage.getItem('TIPS_VALUE')).title, {
+                description: JSON.parse(localStorage.getItem('TIPS_VALUE')).description
             });
             localStorage.setItem('TIPS_LOADED', false);
         }
