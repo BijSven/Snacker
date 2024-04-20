@@ -20,15 +20,16 @@
 
     onMount(async () => {
         if(!localStorage.getItem('TIPS_LOADED')) {
-            localStorage.setItem('TIPS_VALUE', {
+            localStorage.setItem('TIPS_VALUE', JSON.stringify({
                 "title": "Use commands!",
                 "description": "Use our new command-feature to quickly navigate to the Snacker interface. Get started using ctrl + k"
-            });
+            }));
             localStorage.setItem('TIPS_LOADED', true);
         } if(localStorage.getItem('TIPS_LOADED')) {
-            toast.info(localStorage.getItem('TIPS_VALUE').title, {
-                description: localStorage.getItem('TIPS_VALUE').description
+            toast.info(JSON.parse(localStorage.getItem('TIPS_VALUE').title), {
+                description: JSON.parse(localStorage.getItem('TIPS_VALUE').description)
             });
+            localStorage.setItem('TIPS_LOADED', false);
         }
         let SETTING_VIEWTEMPLATE_STORAGE = localStorage.getItem('SETTING_VIEWTEMPLATE')
         SETTING_VIEWTEMPLATE = SETTING_VIEWTEMPLATE_STORAGE ? SETTING_VIEWTEMPLATE_STORAGE : SETTING_VIEWTEMPLATE;
