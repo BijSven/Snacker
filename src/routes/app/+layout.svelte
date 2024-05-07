@@ -16,17 +16,12 @@
     let items;
 
     onMount(async () => {
-        if(!localStorage.getItem('TIPS_LOADED')) {
-            localStorage.setItem('TIPS_VALUE', JSON.stringify({
-                "title": "Use commands!",
-                "description": "Use our new command-feature to quickly navigate to the Snacker interface. Get started using ctrl + k"
-            }));
-            localStorage.setItem('TIPS_LOADED', true);
-        } if(localStorage.getItem('TIPS_LOADED')) {
-            toast.info(JSON.parse(localStorage.getItem('TIPS_VALUE')).title, {
-                description: JSON.parse(localStorage.getItem('TIPS_VALUE')).description
+        if(localStorage.getItem('TIPS_VALUE') != "COMMANDS") {
+            toast.info("Use commands!", {
+                description: "Use our new command-feature to quickly navigate to the Snacker interface. Get started using ctrl + k"
             });
-            localStorage.removeItem('TIPS_LOADED');
+
+            localStorage.setItem('TIPS_VALUE', "COMMANDS");
         }
         let SETTING_VIEWTEMPLATE_STORAGE = localStorage.getItem('SETTING_VIEWTEMPLATE')
         SETTING_VIEWTEMPLATE = SETTING_VIEWTEMPLATE_STORAGE ? SETTING_VIEWTEMPLATE_STORAGE : SETTING_VIEWTEMPLATE;
