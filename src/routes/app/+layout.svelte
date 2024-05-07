@@ -26,7 +26,7 @@
             toast.info(JSON.parse(localStorage.getItem('TIPS_VALUE')).title, {
                 description: JSON.parse(localStorage.getItem('TIPS_VALUE')).description
             });
-            localStorage.setItem('TIPS_LOADED', false);
+            localStorage.removeItem('TIPS_LOADED');
         }
         let SETTING_VIEWTEMPLATE_STORAGE = localStorage.getItem('SETTING_VIEWTEMPLATE')
         SETTING_VIEWTEMPLATE = SETTING_VIEWTEMPLATE_STORAGE ? SETTING_VIEWTEMPLATE_STORAGE : SETTING_VIEWTEMPLATE;
